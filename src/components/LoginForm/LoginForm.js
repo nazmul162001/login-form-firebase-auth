@@ -14,7 +14,8 @@ const auth = getAuth(app);
 
 
 const LoginForm = () => {
-  // const [user, setUser] = useState('')
+  const [email, setEmail] = useState('')
+  const [pass, setPass] = useState('')
 
   const provider = new GoogleAuthProvider();
 
@@ -30,6 +31,22 @@ const LoginForm = () => {
     })
   }
 
+// handle email
+  const handleEmail = e => {
+    setEmail(e.target.value);
+  } 
+
+  // handle Pass
+  const handlePass = e => {
+    setPass(e.target.value);
+  }
+
+  // handle submit 
+  const handleSubmit = () => {
+    console.log(email, pass);
+  }
+
+
 
   return (
     <div className="form-container">
@@ -37,7 +54,7 @@ const LoginForm = () => {
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Control  onBlur={handleEmail} type="email" placeholder="Enter email" />
             <Form.Text className="text-light">
               We'll never share your email with anyone else.
             </Form.Text>
@@ -45,14 +62,14 @@ const LoginForm = () => {
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
+            <Form.Control onBlur={handlePass} type="password" placeholder="Password" />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
+            <Form.Check type="checkbox" label="Already a member?" />
           </Form.Group>
 
-          <Button className="btn-style" variant="primary" type="submit">
-            Submit
+          <Button onClick={handleSubmit} className="btn-style" variant="primary" type="submit">
+            Login
           </Button>
           <p className="text-center py-3">Or Sign in With</p>
           <div className="social-platform d-flex justify-content-around">
