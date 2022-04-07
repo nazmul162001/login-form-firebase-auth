@@ -1,11 +1,36 @@
 import Button from 'react-bootstrap/Form';
-import React from 'react';
+import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import './LoginForm.css';
 import { MdOutlineMail } from 'react-icons/md';
 import { FcGoogle } from 'react-icons/fc';
+import { getAuth, signInWithPopup } from "firebase/auth";
+import app from '../../firebase.init';
+import { GoogleAuthProvider } from "firebase/auth";
+
+// Initialize Firebase Authentication and get a reference to the service
+const auth = getAuth(app);
+
+
 
 const LoginForm = () => {
+  // const [user, setUser] = useState('')
+
+  const provider = new GoogleAuthProvider();
+
+  //handleGoogle
+  const handleGoogle = () => {
+    signInWithPopup(auth, provider)
+    .then(res => {
+      const user = res.user;
+      console.log(user);
+    })
+    .catch(error => {
+      console.error('error', error);
+    })
+  }
+
+
   return (
     <div className="form-container">
       <div className="form-content position-relative">
@@ -34,7 +59,7 @@ const LoginForm = () => {
             <button className="email fs-5">
               <MdOutlineMail className="fs-3 mail" /> Email
             </button>
-            <button className="google fs-5">
+            <button onClick={handleGoogle} className="google fs-5">
               <FcGoogle className="fs-3" /> Google
             </button>
             <div className="sign-up position-absolute bottom-0 text-center">
