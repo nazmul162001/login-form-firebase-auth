@@ -6,6 +6,8 @@ import { FcGoogle } from 'react-icons/fc';
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
@@ -56,6 +58,7 @@ const LoginForm = () => {
         console.log(user);
         setEmail('')
         setPassword('')
+        verifyEmail()
       })
       .catch((error) => {
         console.error(error);
@@ -63,8 +66,23 @@ const LoginForm = () => {
     }
   };
 
-  // verify email{
-    
+  // verify email
+  const verifyEmail = () => {
+    sendEmailVerification(auth.currentUser)
+    .then(() => {
+      console.log('email verification sent');
+    })
+  }
+
+  // handle forget password 
+  const handleForgetPassword = () => {
+    sendPasswordResetEmail(auth, email)
+    .then(() => {
+      console.log('reset email sent');
+    })
+    .catch(error => {
+      console.error('error', error)
+    })
   }
 
   // handle email
@@ -124,6 +142,7 @@ const handleRegistered = event => {
           >
             {registered ? 'Login' : 'Register'}
           </Button>
+          <p className='text-center py-3'><a onClick={handleForgetPassword} href="#">Forget password</a></p>
           <p className="text-center py-3">Or Sign in With</p>
           <div className="social-platform d-flex justify-content-around">
             <button className="email fs-5">
