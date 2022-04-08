@@ -10,6 +10,7 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
+  updateProfile,
 } from 'firebase/auth';
 import app from '../../firebase.init';
 import { GoogleAuthProvider } from 'firebase/auth';
@@ -24,6 +25,11 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [registered, setRegistered] = useState(false)
+  const [name, setName] = useState('')
+
+  const handleName = event => {
+    setName(event.target.value)
+  }
 
   //handle google
   const handleGoogle = (event) => {
@@ -58,7 +64,8 @@ const LoginForm = () => {
         console.log(user);
         setEmail('')
         setPassword('')
-        verifyEmail()
+        verifyEmail();
+        setUserName();
       })
       .catch((error) => {
         console.error(error);
@@ -66,6 +73,15 @@ const LoginForm = () => {
     }
   };
 
+  // update profile / setUserName()
+  const setUserName = () => {
+    updateProfile(auth.currentUser, {
+      displayName: name
+    })
+    .then(() => {
+      console.log('updating your name');
+    })
+  }
   // verify email
   const verifyEmail = () => {
     sendEmailVerification(auth.currentUser)
@@ -105,6 +121,21 @@ const handleRegistered = event => {
     <div className="form-container">
       <div className="form-content position-relative">
         <Form>
+          {/* Register  */}
+          { !registered && <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Your Name</Form.Label>
+            <Form.Control
+              onBlur={handleName}
+              type="email"
+              placeholder="Enter Your Name"
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please Provide your name.
+            </Form.Control.Feedback>
+          </Form.Group>}
+
+          {/* login */}
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
